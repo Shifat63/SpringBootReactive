@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 // Author: Shifat63
@@ -39,4 +40,17 @@ public class Product implements Serializable {
 
     @DBRef(lazy = true)
     private Brand brand;
+
+    public boolean isShowroomExist(String showroomId)
+    {
+        if(this.showroomSet != null) {
+            for (Showroom showroom : this.showroomSet) {
+                if (showroom.getId().equals(showroomId)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

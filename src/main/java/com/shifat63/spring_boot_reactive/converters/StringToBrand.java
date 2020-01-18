@@ -12,10 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class StringToBrand implements Converter<String, Brand> {
-
-    @Autowired
-    private BrandService brandService;
-
     @Override
     public Brand convert(String source) {
         Brand brand;

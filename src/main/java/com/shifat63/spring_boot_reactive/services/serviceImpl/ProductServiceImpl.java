@@ -54,6 +54,22 @@ public class ProductServiceImpl implements ProductService {
         Brand oldBrandOfProduct = new Brand();
         Brand newBrandOfProduct = new Brand();
 
+        if(product.getBrand() != null)
+        {
+            Brand brand = brandRepository.findById(product.getBrand().getId()).block();
+            product.setBrand(brand);
+        }
+
+        if(product.getShowroomSet() != null)
+        {
+            Set<Showroom> showroomSet = new HashSet<>();
+            for(Showroom showroom : product.getShowroomSet())
+            {
+                showroomSet.add(showroomRepository.findById(showroom.getId()).block());
+            }
+            product.setShowroomSet(showroomSet);
+        }
+
         if(product.getId() != null) //Update existing product
         {
             Product oldProduct = productRepository.findById(product.getId()).block();

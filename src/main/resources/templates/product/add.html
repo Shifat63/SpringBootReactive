@@ -55,8 +55,7 @@
                         </div>
                         <div class="col-md-10 form-group">
                             <label th:each="showroom : ${showrooms}">
-                                <input type="checkbox" th:field="*{showroomSet}" th:text="${showroom.getName()}" th:value="${showroom.getId()}"/>
-                                &nbsp;&nbsp;
+                                <input th:checked="${product.isShowroomExist(showroom.getId()) == true}" type="checkbox" name="showroomSet" th:text="${showroom.getName()}" th:value="${showroom.getId()}" />&nbsp;&nbsp;
                             </label>
                             <div class="alert alert-danger" th:if="${#fields.hasErrors('showroomSet')}">
                                 <ul>
@@ -69,17 +68,9 @@
                         <div class="col-md-12 form-group">
                             <label>Brand:</label>
                             <select th:field="*{brand}" class="form-control browser-default custom-select">
-                                <option value="" selected>Select Brand</option>
+                                <option value="">Select Brand</option>
                                 <option th:each="brand : ${brands}" th:value="${brand.getId()}" th:text="${brand.getName()}"></option>
                             </select>
-<!--                            <select th:field="*{brand}" class="form-control browser-default custom-select">-->
-<!--                                <option th:if="${product.getBrand() == null}" value="" selected>Select Brand</option>-->
-<!--                                <option th:if="${product.getBrand() != null}" value="">Select Brand</option>-->
-<!--                                <span th:each="brand : ${brands}" >-->
-<!--                                    <option th:if="${product.getBrand().getId() == brand.getId()}" th:value="${brand.getId()}" th:text="${brand.getName()}" selected></option>-->
-<!--                                    <option th:if="${product.getBrand().getId() != brand.getId()}" th:value="${brand.getId()}" th:text="${brand.getName()}"></option>-->
-<!--                                </span>-->
-<!--                            </select>-->
                             <div th:if="${#fields.hasErrors('brand')}" class="alert alert-danger">
                                 <ul>
                                     <li th:each="err : ${#fields.errors('brand')}" th:text="${err}" ></li>
