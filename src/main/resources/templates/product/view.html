@@ -35,18 +35,14 @@
                                     </span>
                                 </span>
                             </span>
-                            <span th:unless="${product.getShowroomSet() != null && product.getShowroomSet().size() != 0}">
-                                -
+                            <span th:unless="${product.getShowroomSet() != null && product.getShowroomSet().size() != 0}" th:text="'-'">
                             </span>
                         </td>
                         <th>Brand: </th>
                         <td>
-                            <span th:if="${product.getBrand() != null}">
-                                <span th:text="${product.getBrand().getName()}">
-                                </span>
+                            <span th:if="${product.getBrand().getName() != null}" th:text="${product.getBrand().getName()}" >
                             </span>
-                            <span th:unless="${product.getBrand() != null}">
-                                -
+                            <span th:unless="${product.getBrand().getName() != null}" th:text="'-'" >
                             </span>
                         </td>
                     </tr>

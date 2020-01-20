@@ -2,18 +2,15 @@ package com.shifat63.spring_boot_reactive.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 // Author: Shifat63
 
 @Data
-@EqualsAndHashCode(exclude = {"productSet", "employeeSet"})
+@EqualsAndHashCode
 @Document
 public class Showroom implements Serializable {
     @Id
@@ -27,9 +24,8 @@ public class Showroom implements Serializable {
     @Size(min = 1,max = 200, message = "Address must be between 1 to 200 characters")
     private String address;
 
-    @DBRef(lazy = true)
-    private Set<Product> productSet = new HashSet<>();
-
-    @DBRef(lazy = true)
-    private Set<Employee> employeeSet = new HashSet<>();
+    @Override
+    public String toString() {
+        return this.id;
+    }
 }

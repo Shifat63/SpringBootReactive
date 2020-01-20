@@ -5,7 +5,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 // Author: Shifat63
 
 @Data
-@EqualsAndHashCode(exclude = {"showroom"})
+@EqualsAndHashCode
 @Document
 public class Employee implements Serializable {
 
@@ -41,6 +40,11 @@ public class Employee implements Serializable {
     private LocalDate joiningDate;
 
     @NotNull(message = "Employee must belong to a showroom")
-    @DBRef(lazy = true)
-    private Showroom showroom;
+    @DBRef
+    private Showroom showroom = new Showroom();
+
+    @Override
+    public String toString() {
+        return this.id;
+    }
 }

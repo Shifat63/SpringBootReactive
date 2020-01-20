@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import reactor.core.publisher.Mono;
-
 import javax.validation.Valid;
 
 // Author: Shifat63
@@ -59,9 +57,9 @@ public class ShowroomController {
             return "showroom/add";
         }
 
-        Mono<Showroom> savedShowroomMono = showroomService.saveOrUpdate(showroom);
+        showroomService.saveOrUpdate(showroom);
         log.info("end: addOrEditShowroomPost method of ShowroomController");
-        return "redirect:/showroom/view/" + savedShowroomMono.block().getId();
+        return "redirect:/showroom/index";
     }
 
     @RequestMapping("showroom/edit/{showroomId}")

@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-md-10 form-group">
                             <label th:each="showroom : ${showrooms}">
-                                <input th:checked="${product.isShowroomExist(showroom.getId()) == true}" type="checkbox" name="showroomSet" th:text="${showroom.getName()}" th:value="${showroom.getId()}" />&nbsp;&nbsp;
+                                <input type="checkbox" th:field="*{showroomSet}" th:text="${showroom.getName()}" th:value="${showroom.getId()}" />&nbsp;&nbsp;
                             </label>
                             <div class="alert alert-danger" th:if="${#fields.hasErrors('showroomSet')}">
                                 <ul>

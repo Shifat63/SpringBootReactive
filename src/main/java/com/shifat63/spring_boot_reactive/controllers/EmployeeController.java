@@ -2,6 +2,7 @@ package com.shifat63.spring_boot_reactive.controllers;
 
 import com.shifat63.spring_boot_reactive.model.Employee;
 import com.shifat63.spring_boot_reactive.services.service.EmployeeService;
+import com.shifat63.spring_boot_reactive.services.service.ShowroomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import reactor.core.publisher.Mono;
-
 import javax.validation.Valid;
 
 // Author: Shifat63
@@ -20,9 +19,11 @@ import javax.validation.Valid;
 @Controller
 public class EmployeeController {
     private EmployeeService employeeService;
+    private ShowroomService showroomService;
 
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, ShowroomService showroomService) {
         this.employeeService = employeeService;
+        this.showroomService = showroomService;
     }
 
     @RequestMapping({"/employee", "/employee/", "/employee/index"})
@@ -45,6 +46,7 @@ public class EmployeeController {
     public String addEmployeeGet(Model model) throws Exception{
         log.info("start: addEmployeeGet method of EmployeeController");
         model.addAttribute("employee", new Employee());
+        model.addAttribute("showrooms", showroomService.findAll());
         log.info("end: addEmployeeGet method of EmployeeController");
         return "employee/add";
     }
@@ -56,12 +58,13 @@ public class EmployeeController {
 
         if(bindingResult.hasErrors()){
             log.error("error: addOrEditEmployeePost method of EmployeeController -> Employee model validation failed");
+            model.addAttribute("showrooms", showroomService.findAll());
             return "employee/add";
         }
 
-        Mono<Employee> savedEmployeeMono = employeeService.saveOrUpdate(employee);
+        employeeService.saveOrUpdate(employee);
         log.info("end: addOrEditEmployeePost method of EmployeeController");
-        return "redirect:/employee/view/" + savedEmployeeMono.block().getId();
+        return "redirect:/employee/index";
     }
 
     @RequestMapping("employee/edit/{employeeId}")
@@ -69,6 +72,7 @@ public class EmployeeController {
     {
         log.info("start: editEmployeeGet method of EmployeeController");
         model.addAttribute("employee", employeeService.findById(employeeId));
+        model.addAttribute("showrooms", showroomService.findAll());
         log.info("end: editEmployeeGet method of EmployeeController");
         return "employee/add";
     }

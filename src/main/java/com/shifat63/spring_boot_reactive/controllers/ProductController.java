@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import reactor.core.publisher.Mono;
-
 import javax.validation.Valid;
 
 // Author: Shifat63
@@ -69,17 +67,16 @@ public class ProductController {
             return "product/add";
         }
 
-        Mono<Product> savedProductMono = productService.saveOrUpdate(product);
+        productService.saveOrUpdate(product);
         log.info("end: addOrEditProductPost method of ProductController");
-        return "redirect:/product/view/" + savedProductMono.block().getId();
+        return "redirect:/product/index";
     }
 
     @RequestMapping("product/edit/{productId}")
     public String editProductGet(@PathVariable("productId") String productId, Model model) throws Exception
     {
         log.info("start: editProductGet method of ProductController");
-        Mono<Product> productMono = productService.findById(productId);
-        model.addAttribute("product", productMono);
+        model.addAttribute("product", productService.findById(productId));
         model.addAttribute("brands", brandService.findAll());
         model.addAttribute("showrooms", showroomService.findAll());
         log.info("end: editProductGet method of ProductController");

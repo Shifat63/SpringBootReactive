@@ -12,7 +12,6 @@ import com.shifat63.spring_boot_reactive.repositories.ShowroomRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -30,8 +29,6 @@ public class InitialDataLoader implements CommandLineRunner {
 
     private List<Brand> brandList = new ArrayList<>();
     private List<Showroom> showroomList = new ArrayList<>();
-    private List<Product> productList = new ArrayList<>();
-    private List<Employee> employeeList = new ArrayList<>();
 
     public InitialDataLoader(ProductRepository productRepository, BrandRepository brandRepository, EmployeeRepository employeeRepository, ShowroomRepository showroomRepository) {
         this.productRepository = productRepository;
@@ -48,12 +45,8 @@ public class InitialDataLoader implements CommandLineRunner {
         loadShowroomData();
         loadProductData();
         loadEmployeeData();
-        updateShowroomWithProductAndEmployeeData();
-        updateBrandWithProductData();
         brandList.removeAll(brandList);
         showroomList.removeAll(showroomList);
-        productList.removeAll(productList);
-        employeeList.removeAll(employeeList);
     }
 
     private void clearAllData() throws Exception
@@ -115,11 +108,9 @@ public class InitialDataLoader implements CommandLineRunner {
         lenovoLaptop.setDescription("Lenovo Laptop description");
         lenovoLaptop.setAvailable(true);
         lenovoLaptop.setPrice(500.65);
-        Set<Showroom> showroomSetLenovoLaptop = new HashSet<>();
-        showroomSetLenovoLaptop.add(showroomList.get(0));
-        showroomSetLenovoLaptop.add(showroomList.get(1));
-        lenovoLaptop.setShowroomSet(showroomSetLenovoLaptop);
-        productList.add(productRepository.save(lenovoLaptop).block());
+        lenovoLaptop.getShowroomSet().add(showroomList.get(0));
+        lenovoLaptop.getShowroomSet().add(showroomList.get(1));
+        productRepository.save(lenovoLaptop).block();
 
         Product acerLaptop = new Product();
         acerLaptop.setName("Acer Laptop");
@@ -127,11 +118,9 @@ public class InitialDataLoader implements CommandLineRunner {
         acerLaptop.setDescription("Acer Laptop description");
         acerLaptop.setAvailable(true);
         acerLaptop.setPrice(400.75);
-        Set<Showroom> showroomSetAcerLaptop = new HashSet<>();
-        showroomSetAcerLaptop.add(showroomList.get(0));
-        showroomSetAcerLaptop.add(showroomList.get(1));
-        acerLaptop.setShowroomSet(showroomSetAcerLaptop);
-        productList.add(productRepository.save(acerLaptop).block());
+        acerLaptop.getShowroomSet().add(showroomList.get(0));
+        acerLaptop.getShowroomSet().add(showroomList.get(1));
+        productRepository.save(acerLaptop).block();
 
         Product dellLaptop = new Product();
         dellLaptop.setName("Dell Laptop");
@@ -139,11 +128,9 @@ public class InitialDataLoader implements CommandLineRunner {
         dellLaptop.setDescription("Dell Laptop description");
         dellLaptop.setAvailable(true);
         dellLaptop.setPrice(450.50);
-        Set<Showroom> showroomSetDellLaptop = new HashSet<>();
-        showroomSetDellLaptop.add(showroomList.get(0));
-        showroomSetDellLaptop.add(showroomList.get(1));
-        dellLaptop.setShowroomSet(showroomSetDellLaptop);
-        productList.add(productRepository.save(dellLaptop).block());
+        dellLaptop.getShowroomSet().add(showroomList.get(0));
+        dellLaptop.getShowroomSet().add(showroomList.get(1));
+        productRepository.save(dellLaptop).block();
 
         Product intelProcessor = new Product();
         intelProcessor.setName("Intel Processor");
@@ -151,11 +138,9 @@ public class InitialDataLoader implements CommandLineRunner {
         intelProcessor.setDescription("Intel Processor description");
         intelProcessor.setAvailable(true);
         intelProcessor.setPrice(210.50);
-        Set<Showroom> showroomSetIntelProcessor = new HashSet<>();
-        showroomSetIntelProcessor.add(showroomList.get(0));
-        showroomSetIntelProcessor.add(showroomList.get(1));
-        intelProcessor.setShowroomSet(showroomSetIntelProcessor);
-        productList.add(productRepository.save(intelProcessor).block());
+        intelProcessor.getShowroomSet().add(showroomList.get(0));
+        intelProcessor.getShowroomSet().add(showroomList.get(1));
+        productRepository.save(intelProcessor).block();
 
         Product intelMotherBoard = new Product();
         intelMotherBoard.setName("Intel MotherBoard");
@@ -163,10 +148,8 @@ public class InitialDataLoader implements CommandLineRunner {
         intelMotherBoard.setDescription("Intel MotherBoard description");
         intelMotherBoard.setAvailable(false);
         intelMotherBoard.setPrice(110.50);
-        Set<Showroom> showroomSetIntelMotherBoard = new HashSet<>();
-        showroomSetIntelMotherBoard.add(showroomList.get(1));
-        intelMotherBoard.setShowroomSet(showroomSetIntelMotherBoard);
-        productList.add(productRepository.save(intelMotherBoard).block());
+        intelMotherBoard.getShowroomSet().add(showroomList.get(1));
+        productRepository.save(intelMotherBoard).block();
 
         //END: Product data
     }
@@ -181,7 +164,7 @@ public class InitialDataLoader implements CommandLineRunner {
         ema.setBirthDate(LocalDate.now().minus((24*365), ChronoUnit.DAYS));
         ema.setJoiningDate(LocalDate.now().minus((1*365), ChronoUnit.DAYS));
         ema.setShowroom(showroomList.get(0));
-        employeeList.add(employeeRepository.save(ema).block());
+        employeeRepository.save(ema).block();
 
         Employee zuha = new Employee();
         zuha.setFirstName("Zuha");
@@ -190,7 +173,7 @@ public class InitialDataLoader implements CommandLineRunner {
         zuha.setBirthDate(LocalDate.now().minus((23*365), ChronoUnit.DAYS));
         zuha.setJoiningDate(LocalDate.now().minus((2*365), ChronoUnit.DAYS));
         zuha.setShowroom(showroomList.get(1));
-        employeeList.add(employeeRepository.save(zuha).block());
+        employeeRepository.save(zuha).block();
 
         Employee joki = new Employee();
         joki.setFirstName("Adam");
@@ -199,7 +182,7 @@ public class InitialDataLoader implements CommandLineRunner {
         joki.setBirthDate(LocalDate.now().minus((25*365), ChronoUnit.DAYS));
         joki.setJoiningDate(LocalDate.now().minus((3*365), ChronoUnit.DAYS));
         joki.setShowroom(showroomList.get(0));
-        employeeList.add(employeeRepository.save(joki).block());
+        employeeRepository.save(joki).block();
 
         Employee fish = new Employee();
         fish.setFirstName("Bryan");
@@ -208,49 +191,7 @@ public class InitialDataLoader implements CommandLineRunner {
         fish.setBirthDate(LocalDate.now().minus((27*365), ChronoUnit.DAYS));
         fish.setJoiningDate(LocalDate.now());
         fish.setShowroom(showroomList.get(1));
-        employeeList.add(employeeRepository.save(fish).block());
+        employeeRepository.save(fish).block();
         //END: Employee data
-    }
-
-    private void updateShowroomWithProductAndEmployeeData() throws Exception
-    {
-        Showroom showroom = showroomList.get(0);
-        showroom.getProductSet().add(productList.get(0));
-        showroom.getProductSet().add(productList.get(1));
-        showroom.getProductSet().add(productList.get(2));
-        showroom.getProductSet().add(productList.get(3));
-        showroom.getEmployeeSet().add(employeeList.get(0));
-        showroom.getEmployeeSet().add(employeeList.get(2));
-        showroomRepository.save(showroom).block();
-
-        showroom = showroomList.get(1);
-        showroom.getProductSet().add(productList.get(0));
-        showroom.getProductSet().add(productList.get(1));
-        showroom.getProductSet().add(productList.get(2));
-        showroom.getProductSet().add(productList.get(3));
-        showroom.getProductSet().add(productList.get(4));
-        showroom.getEmployeeSet().add(employeeList.get(1));
-        showroom.getEmployeeSet().add(employeeList.get(3));
-        showroomRepository.save(showroom).block();
-    }
-
-    private void updateBrandWithProductData() throws Exception
-    {
-        Brand brand = brandList.get(0);
-        brand.getProductSet().add(productList.get(0));
-        brandRepository.save(brand).block();
-
-        brand = brandList.get(1);
-        brand.getProductSet().add(productList.get(3));
-        brand.getProductSet().add(productList.get(4));
-        brandRepository.save(brand).block();
-
-        brand = brandList.get(2);
-        brand.getProductSet().add(productList.get(1));
-        brandRepository.save(brand).block();
-
-        brand = brandList.get(3);
-        brand.getProductSet().add(productList.get(2));
-        brandRepository.save(brand).block();
     }
 }

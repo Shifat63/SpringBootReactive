@@ -1,9 +1,7 @@
 package com.shifat63.spring_boot_reactive.services.serviceImpl;
 
 import com.shifat63.spring_boot_reactive.model.Employee;
-import com.shifat63.spring_boot_reactive.model.Showroom;
 import com.shifat63.spring_boot_reactive.repositories.EmployeeRepository;
-import com.shifat63.spring_boot_reactive.repositories.ShowroomRepository;
 import com.shifat63.spring_boot_reactive.services.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,11 +14,9 @@ import reactor.core.publisher.Mono;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
-    private ShowroomRepository showroomRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, ShowroomRepository showroomRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.showroomRepository = showroomRepository;
     }
 
     @Override
@@ -40,48 +36,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Mono<Employee> saveOrUpdate(Employee employee) throws Exception {
+    public Mono<Void> saveOrUpdate(Employee employee) throws Exception {
         log.info("start: saveOrUpdate method of EmployeeServiceImpl");
-        Mono<Employee> savedEmployeeMono = null;
-        if(employee.getId() != null)
-        {
-            Employee previousInstanceOfEmployee = employeeRepository.findById(employee.getId()).block();
-            if(previousInstanceOfEmployee.getShowroom().getId() != employee.getShowroom().getId())
-            {
-                Showroom previousShowroom = previousInstanceOfEmployee.getShowroom();
-                previousShowroom.getEmployeeSet().remove(employee);
-                showroomRepository.save(previousShowroom);
-
-                Showroom newShowroom = employee.getShowroom();
-                newShowroom.getEmployeeSet().add(employee);
-                showroomRepository.save(newShowroom);
-            }
-            savedEmployeeMono = employeeRepository.save(employee);
-        }
-        else
-        {
-            savedEmployeeMono = employeeRepository.save(employee);
-            Employee savedEmployee = savedEmployeeMono.block();
-            Showroom newShowroom = savedEmployee.getShowroom();
-            newShowroom.getEmployeeSet().add(savedEmployee);
-            showroomRepository.save(newShowroom);
-        }
-
+        employeeRepository.save(employee).subscribe();
         log.info("end: saveOrUpdate method of EmployeeServiceImpl");
-        return savedEmployeeMono;
+        return Mono.empty();
     }
 
     @Override
     public Mono<Void> deleteById(String employeeId) throws Exception {
         log.info("start: deleteById method of EmployeeServiceImpl");
-        Employee toBeDeletedEmployee = employeeRepository.findById(employeeId).block();
-
-        //Removing this employee from his showroom
-        Showroom showroom = toBeDeletedEmployee.getShowroom();
-        showroom.getEmployeeSet().remove(toBeDeletedEmployee);
-        showroomRepository.save(showroom);
-
-        employeeRepository.deleteById(employeeId);
+        employeeRepository.deleteById(employeeId).subscribe();
         log.info("end: deleteById method of EmployeeServiceImpl");
         return Mono.empty();
     }
@@ -89,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public  Mono<Void> deleteAll() throws Exception {
         log.info("start: deleteAll method of EmployeeServiceImpl");
-        employeeRepository.deleteAll();
+        employeeRepository.deleteAll().subscribe();
         log.info("end: deleteAll method of EmployeeServiceImpl");
         return Mono.empty();
     }

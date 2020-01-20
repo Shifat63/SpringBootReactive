@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
@@ -59,9 +58,9 @@ public class BrandController {
             return "brand/add";
         }
 
-        Mono<Brand> savedBrandMono = brandService.saveOrUpdate(brand);
+        brandService.saveOrUpdate(brand);
         log.info("end: addOrEditBrandPost method of BrandController");
-        return "redirect:/brand/view/" + savedBrandMono.block().getId();
+        return "redirect:/brand/index";
     }
 
     @RequestMapping("brand/edit/{brandId}")

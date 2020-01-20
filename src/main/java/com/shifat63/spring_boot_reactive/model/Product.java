@@ -4,7 +4,6 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,7 +12,7 @@ import java.util.Set;
 // Author: Shifat63
 
 @Data
-@EqualsAndHashCode(exclude = {"showroomSet", "brand"})
+@EqualsAndHashCode
 @Document
 public class Product implements Serializable {
     @Id
@@ -35,22 +34,14 @@ public class Product implements Serializable {
     @Size(min = 1,max = 500, message = "Description must be between 1 to 500 characters")
     private String description;
 
-    @DBRef(lazy = true)
-    private Set<Showroom> showroomSet;
+    @DBRef
+    private Set<Showroom> showroomSet = new HashSet<>();
 
-    @DBRef(lazy = true)
-    private Brand brand;
+    @DBRef
+    private Brand brand = new Brand();
 
-    public boolean isShowroomExist(String showroomId)
-    {
-        if(this.showroomSet != null) {
-            for (Showroom showroom : this.showroomSet) {
-                if (showroom.getId().equals(showroomId)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+    @Override
+    public String toString() {
+        return this.id;
     }
 }

@@ -9,7 +9,7 @@ public interface CrudService<T, Id>
 {
     Flux<T> findAll() throws Exception;
     Mono<T> findById(Id id) throws Exception;
-    Mono<T> saveOrUpdate(T object) throws Exception;
+    Mono<Void> saveOrUpdate(T object) throws Exception;
     Mono<Void> deleteById(Id id) throws Exception;
     Mono<Void> deleteAll() throws Exception;
 }

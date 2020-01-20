@@ -19,7 +19,7 @@
                                 <th>Name</th>
                                 <th>View</th>
                                 <th>Edit</th>
-                                <th>Delete</th>
+<!--                                <th>Delete</th>-->
                             </tr>
                             </thead>
                             <tbody>
@@ -28,7 +28,7 @@
                                 <td th:text="${brand.getName()}"></td>
                                 <td><a th:text="#{view}" th:href="@{'/brand/view/' + ${brand.getId()} }">View</a></td>
                                 <td><a th:text="#{edit}" th:href="@{'/brand/edit/' + ${brand.getId()} }">Edit</a></td>
-                                <td><a th:text="#{delete}" th:href="@{'/brand/delete/' + ${brand.getId()} }">Delete</a></td>
+<!--                                <td><a th:text="#{delete}" th:href="@{'/brand/delete/' + ${brand.getId()} }">Delete</a></td>-->
                             </tr>
                             </tbody>
                         </table>

@@ -2,19 +2,15 @@ package com.shifat63.spring_boot_reactive.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 // Author: Shifat63
 
 @Data
-@EqualsAndHashCode(exclude = {"productSet"})
+@EqualsAndHashCode
 @Document
 public class Brand implements Serializable {
     @Id
@@ -28,6 +24,8 @@ public class Brand implements Serializable {
     @Size(min = 1,max = 500, message = "Description must be between 1 to 500 characters")
     private String description;
 
-    @DBRef(lazy = true)
-    private Set<Product> productSet = new HashSet<>();
+    @Override
+    public String toString() {
+        return this.id;
+    }
 }

@@ -7,15 +7,11 @@ import org.springframework.stereotype.Component;
 // Author: Shifat63
 
 @Component
-public class StringToShowroom implements Converter<String, Showroom> {
+public class StringToShowroom implements Converter<String, Showroom>{
     @Override
     public Showroom convert(String source) {
-        Showroom showroom;
-        if(source == null || source.equalsIgnoreCase(""))
-        {
-            showroom = null;
-        }
-        else
+        Showroom showroom = null;
+        if(source != null && !source.equalsIgnoreCase(""))
         {
             showroom = new Showroom();
             showroom.setId(source);
